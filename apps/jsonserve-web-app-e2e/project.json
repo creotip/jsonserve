@@ -1,0 +1,9 @@
+{
+  "name": "jsonserve-web-app-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/jsonserve-web-app-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["jsonserve-web-app"],
+  "// targets": "to see all targets run: nx show project jsonserve-web-app-e2e --web",
+  "targets": {}
+}
