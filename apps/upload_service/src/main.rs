@@ -58,7 +58,7 @@ fn index() -> &'static str {
 
       POST /
 
-          accepts3 raw data in the body of the request and responds with a URL of
+          accepts raw data in the body of the request and responds with a URL of
           a page containing the body's content
 
           EXAMPLE: curl --data-binary @file.txt http://localhost:8000
