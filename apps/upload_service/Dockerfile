@@ -32,9 +32,7 @@ COPY config.${ENV}.toml /usr/src/upload_service/config.toml
 RUN useradd -m -d /home/uploadserviceuser uploadserviceuser && \
     chown -R uploadserviceuser:uploadserviceuser /usr/src/upload_service && \
     chmod -R 755 /usr/src/upload_service && \
-    chmod 664 /usr/src/upload_service/*.toml
-RUN mkdir -p /usr/local/cargo && \
-    chown -R uploadserviceuser:uploadserviceuser /usr/local/cargo   
+    chmod 664 /usr/src/upload_service/*.toml   
 
 USER uploadserviceuser
 EXPOSE 8000
