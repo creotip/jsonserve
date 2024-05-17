@@ -11,7 +11,11 @@ use rocket::http::uri::Absolute;
 use rocket::response::content::RawText;
 use rocket::tokio::fs::{self, File};
 
+use std::fs::Permissions;
+use std::os::unix::fs::PermissionsExt;
+
 use paste_id::PasteId;
+
 
 // In a real application, these would be retrieved dynamically from a config.
 const HOST: Absolute<'static> = uri!("http://localhost:8000");
@@ -20,8 +24,15 @@ const ID_LENGTH: usize = 5;
 #[post("/", data = "<paste>")]
 async fn upload(paste: Data<'_>) -> io::Result<String> {
     let id = PasteId::new(ID_LENGTH);
-    let file_path = id.file_path();
-    match paste.open(128.kibibytes()).into_file(&file_path).await {
+    let path = id.file_path();
+
+    // Create directories if they do not exist
+    if let Some(dir_path) = path.parent() {
+        fs::create_dir_all(dir_path).await?;
+        fs::set_permissions(dir_path, Permissions::from_mode(0o755)).await?;
+    }
+
+    match paste.open(128.kibibytes()).into_file(&path).await {
         Ok(_) => Ok(uri!(HOST, retrieve(id)).to_string()),
         Err(e) => {
             eprintln!("Failed to save file: {:?}", e); // Log the error to stderr
@@ -29,6 +40,7 @@ async fn upload(paste: Data<'_>) -> io::Result<String> {
         }
     }
 }
+
 #[get("/<id>")]
 async fn retrieve(id: PasteId<'_>) -> Option<RawText<File>> {
     File::open(id.file_path()).await.map(RawText).ok()
@@ -46,7 +58,7 @@ fn index() -> &'static str {
 
       POST /
 
-          accepts raw data in the body of the request and responds with a URL of
+          accepts3 raw data in the body of the request and responds with a URL of
           a page containing the body's content
 
           EXAMPLE: curl --data-binary @file.txt http://localhost:8000
@@ -57,9 +69,14 @@ fn index() -> &'static str {
     "
 }
 
+#[get("/favicon.ico")]
+fn favicon() -> Option<()> {
+    None
+}
+
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![index, upload, delete, retrieve]).configure(rocket::Config{
+    rocket::build().mount("/", routes![index, upload, delete, retrieve, favicon]).configure(rocket::Config{
         address: std::net::IpAddr::V4(std::net::Ipv4Addr::new(0, 0, 0, 0)),  // Bind to all addresses
         port: 8000,
         ..rocket::Config::default()

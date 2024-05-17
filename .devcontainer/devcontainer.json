@@ -1,0 +1,17 @@
+{
+  "name": "Rust Rocket Upload Service",
+  "build": {
+    "dockerfile": "apps/upload_service/Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": ["rust-lang.rust", "ms-vscode-remote.remote-containers"]
+    }
+  },
+  "forwardPorts": [8000],
+  "remoteUser": "uploadservice"
+}
