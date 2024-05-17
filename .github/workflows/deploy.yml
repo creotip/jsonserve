@@ -12,10 +12,13 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Print Environment Variable
+      - name: Check if ENV is set
         run: |
-          echo "Environment is ${{ secrets.ENV }}"
-          echo "Another environment operation or command"
+          if [ -z "${{ secrets.ENV }}" ]; then
+            echo "ENV secret is not set or is empty."
+          else
+            echo "ENV secret is set."
+          fi
         shell: bash
 
       - name: Log in to DigitalOcean Container Registry
