@@ -29,6 +29,8 @@ jobs:
           file: ./apps/upload_service/Dockerfile
           push: true
           tags: registry.digitalocean.com/${{ secrets.REGISTRY_NAME }}/upload_service:latest
+          build-args: |
+            ENV=${{ secrets.ENV }}
 
       - name: Logout from DigitalOcean Container Registry
         if: always()
