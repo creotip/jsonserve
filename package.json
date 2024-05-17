@@ -11,10 +11,11 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@monodon/rust": "1.4.0",
     "@nx/devkit": "19.0.3",
     "@nx/eslint": "19.0.3",
     "@nx/eslint-plugin": "19.0.3",
-    "@nx/jest": "19.0.3",
+    "@nx/jest": "19.1.0-canary.20240514-cc9b7f3",
     "@nx/js": "19.0.3",
     "@nx/next": "19.0.3",
     "@nx/playwright": "19.0.3",

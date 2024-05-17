@@ -1,0 +1,9 @@
+[package]
+name = "upload_service"
+version = "0.5.0"
+edition = "2021"
+
+[dependencies]
+rocket = "0.5.0"
+rand = "0.8"
+
