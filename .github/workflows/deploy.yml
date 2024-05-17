@@ -26,7 +26,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
+          file: ./apps/upload_service/Dockerfile
           push: true
           tags: registry.digitalocean.com/${{ secrets.REGISTRY_NAME }}/upload_service:latest
           build-args: |
