@@ -12,14 +12,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Check if ENV is set
+      - name: Show ENV and list config files
         run: |
-          if [ -z "${{ secrets.ENV }}" ]; then
-            echo "ENV secret is not set or is empty."
-          else
-            echo "ENV secret is set."
-          fi
-        shell: bash
+          echo "ENV is set to $ENV"
+          ls -l ./apps/upload_service/
+        env:
+          ENV: prod
 
       - name: Log in to DigitalOcean Container Registry
         uses: docker/login-action@v3
@@ -37,9 +35,10 @@ jobs:
           context: .
           file: ./apps/upload_service/Dockerfile
           push: true
-          tags: registry.digitalocean.com/${{ secrets.REGISTRY_NAME }}/upload_service:latest
+          tags: registry.digitalocean.com/creotip-hub/upload_service:latest
+          target: prod
           build-args: |
-            ENV=${{ secrets.ENV }}
+            ENV=prod
 
       - name: Logout from DigitalOcean Container Registry
         if: always()
