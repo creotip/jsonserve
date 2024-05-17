@@ -32,7 +32,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./apps/upload_service/
           file: ./apps/upload_service/Dockerfile
           push: true
           tags: registry.digitalocean.com/creotip-hub/upload_service:latest
